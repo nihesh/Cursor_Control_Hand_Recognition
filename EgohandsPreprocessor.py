@@ -5,7 +5,7 @@
 This file reads the Egohands dataset, and converts it into a suitable format that can be understood by VGG-SSD implementation
 
 Usage:
-python3 EgohandsPreprocessor.py <path to root directory of egohands dataset>
+python3 EgohandsPreprocessor.py if want to merge
 
 Output: 
 Generates Egohands folder in the cwd
@@ -30,7 +30,7 @@ if(__name__ == "__main__"):
 
     parser = argparse.ArgumentParser(description = 'Arguments for script')
 
-    parser.add_argument('--merge', default = False, action = 'store_true',
+    parser.add_argument('--nomerge', default = False, action = 'store_true',
                     help = 'if True, folders will be merged to one single train folder')
     
     args = parser.parse_args()
@@ -75,12 +75,12 @@ if(__name__ == "__main__"):
                                     final_imglocation = "./../Dataset/egohands_data/_LABELLED_SAMPLES/" + str(x[0, fid][0][0]) + "/" + str(file_counter) + ".jpg"
                                     df.loc[counter] = [str(file_counter) + ".jpg", 1, "Hand", int(minxy[0]), int(minxy[1]), int(maxxy[0]), int(maxxy[1])]
                                     if(os.path.exists(cur_imglocation)):
-                                        if(args.merge):
+                                        if(not args.nomerge):
                                             copyfile(cur_imglocation, NEW_FOLDER + "/" + str(file_counter) + ".jpg")
                                     else:
                                         print("Exiting: original filenames mentioned in metadata.mat not found, meaning this script has already renamed images before")
                                         sys.exit()
                                     counter += 1
                     file_counter += 1                
-    df.to_csv("./../Dataset/Annotations.csv", index = False)				
+    df.to_csv("./../Dataset/egohands_data/Annotations.csv", index = False)				
     
