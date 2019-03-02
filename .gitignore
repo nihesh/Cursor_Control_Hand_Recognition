@@ -1,0 +1,5 @@
+# Ignore models directory if exists
+SSD-qfgaohao/models/
+
+# Ignore eval_results if exists. Just another data file
+SSD-qfgaohao/eval_results/
