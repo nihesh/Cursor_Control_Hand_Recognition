@@ -1,0 +1,1 @@
+ROOT_DIR = "../Dataset/egohands_data" 
