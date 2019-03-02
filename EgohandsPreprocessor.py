@@ -39,8 +39,8 @@ def TrainTestSplit():
     global ROOT
 
     SUBROOT = ROOT+"/train/"
-    images = os.listdir(ROOT)
-
+    images = os.listdir(SUBROOT)
+    
     # Setting a random state to ensure the same train test split is generated
     random_state = 10
     random.Random(random_state).shuffle(images)
