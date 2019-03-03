@@ -6,7 +6,7 @@ from vision.ssd.mobilenet_v2_ssd_lite import create_mobilenetv2_ssd_lite, create
 from vision.utils.misc import Timer
 import cv2
 import sys
-
+import os
 if len(sys.argv) < 4:
     print('Usage: python run_ssd_example.py <net type>  <model path> <label path> [video file]')
     sys.exit(0)
@@ -53,9 +53,13 @@ elif net_type == 'sq-ssd-lite':
 else:
     print("The net type is wrong. It should be one of vgg16-ssd, mb1-ssd and mb1-ssd-lite.")
     sys.exit(1)
+if(not os.path.exists("./visualisation")):
+    os.makedirs("./visualisation")
 
 
 timer = Timer()
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('./visualisation/output.avi',fourcc, 30.0, (1920,1080))
 while True:
     ret, orig_image = cap.read()
     if orig_image is None:
@@ -76,8 +80,10 @@ while True:
                     1,  # font scale
                     (255, 0, 255),
                     2)  # line type
-    cv2.imshow('annotated', orig_image)
+    #cv2.imshow('annotated', orig_image)
+    out.write(orig_image)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 cap.release()
 cv2.destroyAllWindows()
+out.release()
