@@ -18,8 +18,8 @@ if len(sys.argv) >= 5:
     cap = cv2.VideoCapture(sys.argv[4])  # capture from file
 else:
     cap = cv2.VideoCapture(0)   # capture from camera
-    cap.set(3, 1920)
-    cap.set(4, 1080)
+    cap.set(3, 640)
+    cap.set(4, 480)
 
 class_names = [name.strip() for name in open(label_path).readlines()]
 num_classes = len(class_names)
@@ -59,11 +59,11 @@ if(not os.path.exists("./visualisation")):
 
 timer = Timer()
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('./visualisation/output.avi',fourcc, 30.0, (1920,1080))
+out = cv2.VideoWriter('./visualisation/output.avi',fourcc, 30.0, (640, 480))
 while True:
     ret, orig_image = cap.read()
     if orig_image is None:
-        continue
+        break
     image = cv2.cvtColor(orig_image, cv2.COLOR_BGR2RGB)
     timer.start()
     boxes, labels, probs = predictor.predict(image, 10, 0.4)
