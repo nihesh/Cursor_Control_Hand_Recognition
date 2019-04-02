@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import scipy.misc
 
-SCALE_FACTOR = 10
+SCALE_FACTOR = 7
 BLIND_SPOT_FRACTION = [1.2, 1.5]
 
 def Segment(img):
