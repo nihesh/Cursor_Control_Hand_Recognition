@@ -7,7 +7,7 @@ import numpy as np
 import scipy.misc
 import pyautogui
 
-SCALE_FACTOR = 7
+SCALE_FACTOR = 10
 BLIND_SPOT_FRACTION = [1.2, 1.5]
 
 def Segment(img):

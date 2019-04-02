@@ -6,6 +6,9 @@ import cv2
 import numpy as np
 import scipy.misc
 import pyautogui
+from traditional import Segment
+from skimage import data, img_as_float
+from skimage.segmentation import chan_vese
 
 SCALE_FACTOR = 10
 BLIND_SPOT_FRACTION = [1.2, 1.5]
@@ -15,8 +18,20 @@ def DetectHand(frame):
 	"""
 	Write a custom method that accepts a frame from webcam and returns  
 	"""
-
-
+	frame = cv2.resize(frame, (0,0), fx = 0.5, fy = 0.5)
+	frame = Segment(frame)
+	frame = frame.astype(np.uint8)
+	contours, heirarchy = cv2.findContours(frame,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)	
+	max = -1
+	maxc = -1
+	for cnt in contours:
+		area=cv2.contourArea(cnt) #contour area
+		if(area > max):
+			max = area
+			maxc = cnt
+	img = np.zeros(frame.shape)		
+	cv2.drawContours(img,[maxc],-1,(255),2)
+	return img
 def Normalise(hand, dim):
 
 	global BLIND_SPOT_FRACTION
@@ -64,12 +79,12 @@ if(__name__ == "__main__"):
 		ret, frame2 = camera.read()
 
 		hand = DetectHand(frame2)
-		hand = Normalise(hand, np.asarray(frame2.shape))
+		#hand = Normalise(hand, np.asarray(frame2.shape))
 
-		MoveCursor(hand, frame2.shape)
+		#MoveCursor(hand, frame2.shape)
 		
-		marked = MarkHand(frame2, hand)
-		cv2.imshow("Output", marked)
+		#marked = MarkHand(frame2, hand)
+		cv2.imshow("Output", hand)
 
 		cv2.waitKey(1000//60)
 
