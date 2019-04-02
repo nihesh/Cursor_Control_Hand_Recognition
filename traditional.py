@@ -1,4 +1,5 @@
-# Author: Nihesh Anderson
+
+-*# Author: Nihesh Anderson
 # File: traditional.py
 
 import cv2
@@ -49,7 +50,10 @@ def MarkHand(img, coords):
 	out = np.copy(img)
 	for i in range(-3,4):
 		for j in range(-3,4):
-			out[coords[0]+i][coords[1]+j][0] = 255
+			try:
+				out[coords[0]+i][coords[1]+j][0] = 255
+			except:
+				pass
 	return out 
 
 if(__name__ == "__main__"):
