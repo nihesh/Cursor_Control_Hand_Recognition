@@ -5,6 +5,7 @@
 import cv2
 import numpy as np
 import scipy.misc
+import pyautogui
 
 SCALE_FACTOR = 7
 BLIND_SPOT_FRACTION = [1.2, 1.5]
@@ -56,6 +57,21 @@ def MarkHand(img, coords):
 				pass
 	return out 
 
+def MoveCursor(hand, dim):
+
+	"""
+	Smoothening has to be done here
+	"""
+
+	screenWidth, screenHeight = pyautogui.size()
+	out = np.asarray([0,0])
+
+	out[0] = 1+hand[0]*(int(screenWidth/dim[0]))
+	out[1] = 1+hand[1]*(int(screenWidth/dim[1]))
+	
+	print(out)
+	pyautogui.moveTo(out[0], out[1])
+
 if(__name__ == "__main__"):
 
 	camera = cv2.VideoCapture(0)
@@ -72,6 +88,8 @@ if(__name__ == "__main__"):
 		hand = DetectHand(difference)
 		hand = Normalise(hand, np.asarray(frame2.shape))
 
+		MoveCursor(hand, difference.shape)
+
 		difference = np.reshape(difference, (difference.shape[0], difference.shape[1], 1))
 		difference = np.repeat(difference, 3, 2)
 		
@@ -80,3 +98,4 @@ if(__name__ == "__main__"):
 
 		cv2.waitKey(1000//60)
 		frame1 = frame2
+
